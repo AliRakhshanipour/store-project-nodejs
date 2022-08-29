@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const path = require("path");
 const { AllRoutes } = require("./router/router");
-
+const createError = require("http-errors"); // for error handling
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
 //---------------------------------------------------------------- app configuration
 module.exports = class Application {
   #app = express();
@@ -23,6 +25,33 @@ module.exports = class Application {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
     this.#app.use(express.static(path.join(__dirname, "..", "public")));
+    this.#app.use(
+      "/api-doc",
+      swaggerUI.serve,
+      swaggerUI.setup(
+        swaggerJsDoc({
+          swaggerDefinition: {
+            info: {
+              title: "NodeJs Store",
+              version: "1.0.0",
+              description:
+                "This Store Developed By Node.Js , Express.Js , GraphQL , Swagger and ...",
+              contact: {
+                name: "ali rakhshanipour",
+                email: "ali.rakhshanipour.sru@gmail.com",
+              },
+            },
+            servers: [
+              {
+                url: "http://localhost:3000/",
+                description: "local server",
+              },
+            ],
+          },
+          apis: ["./app/router/**/*.js"],
+        })
+      )
+    );
   }
   createServer() {
     const http = require("http");
@@ -48,12 +77,13 @@ module.exports = class Application {
   }
   errorHandler() {
     this.#app.use((req, res, next) => {
-      return res.json({ statusCode: 404, message: "Page Not Found" });
+      next(createError.NotFound("Page Not Found"));
     });
     this.#app.use((err, req, res, next) => {
-      const statusCode = err.status || 500;
-      const message = err.status || "internal server error";
-      return res.status(statusCode).json({ statusCode, message });
+      const serverError = createError.InternalServerError();
+      const statusCode = err.status || serverError.status;
+      const message = err.message || serverError.message;
+      return res.status(statusCode).json({ errors: { statusCode, message } });
     });
   }
   createRotes() {

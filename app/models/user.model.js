@@ -3,9 +3,9 @@ const { Schema, model, Types } = require("mongoose");
 const schema = new Schema({
   first_name: { type: String },
   last_name: { type: String },
-  username: { type: String, lowercase: true, unique: true },
+  username: { type: String },
   phone: { type: String },
-  email: { type: String, lowercase: true, unique: true },
+  email: { type: String },
   otp: {
     type: Object,
     default: {

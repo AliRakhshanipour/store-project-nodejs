@@ -1,0 +1,9 @@
+POST  http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "phone": "09120397593"
+}
+###home page
+GET  http://localhost:3000
+Content-Type: application/json
