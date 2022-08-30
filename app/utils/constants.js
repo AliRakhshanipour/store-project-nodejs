@@ -1,6 +1,14 @@
 module.exports = {
-  EXPIRES_IN: new Date().getTime() + 120000,
-  USER_ROLE: "USER",
+  EXPIRES_IN: () => {
+    return new Date().getTime() + 120000;
+  },
+  ROLES: {
+    USER: "USER",
+    ADMIN: "ADMIN",
+    WRITER: "WRITER",
+    TEACHER: "TEACHER",
+    SUPPLIER: "SUPPLIER",
+  },
   ADMIN_ROLE: "ADMIN",
   ACCESS_TOKEN_SECRET_KEY:
     "9FA3DD5E6EC55F867DCF5F421339953605006E1EE38AB620AB577758EC67E55C",

@@ -1,11 +1,18 @@
 const autoBind = require("auto-bind");
 const createHttpError = require("http-errors");
 const { UserModel } = require("../../../../models/user.model");
-const { USER_ROLE, EXPIRES_IN } = require("../../../../utils/constants");
+const { ROLES, EXPIRES_IN } = require("../../../../utils/constants");
+
 const {
   randomNumberGenerator,
 } = require("../../../../utils/random-number-generator");
-const { signAccessToken } = require("../../../../utils/token-generator");
+const {
+  signAccessToken,
+  signRefreshToken,
+} = require("../../../../utils/token-generator");
+const {
+  verifyRefreshToken,
+} = require("../../../../utils/verify-refresh-token");
 const {
   getOtpSchema,
   checkOtpSchema,
@@ -43,23 +50,37 @@ class UserAthController extends Controller {
       if (now > +user.otp.expiresIn)
         throw createHttpError.Unauthorized("Code Has Expired");
       const accessToken = await signAccessToken(user._id);
-      return res.json({ data: { accessToken } });
+      const refreshToken = await signRefreshToken(user._id);
+
+      return res.json({ data: { accessToken, refreshToken } });
     } catch (error) {
       next(error);
+    }
+  }
+  async refreshToken(req, res, next) {
+    try {
+      const { refreshToken } = req.body;
+      const phone = await verifyRefreshToken(refreshToken);
+      const user = await UserModel.findOne({ phone });
+      const accessToken = await signAccessToken(user._id);
+      const newRefreshToken = await signRefreshToken(user._id);
+      return res.json({ data: { accessToken, refreshToken: newRefreshToken } });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
     }
   }
 
   async saveUser(phone, code) {
     let otp = {
       code,
-      expiresIn: EXPIRES_IN,
+      expiresIn: EXPIRES_IN(),
     };
     const result = await this.checkExistUser(phone);
     console.log(result);
     if (result) {
       return await this.updateUser(phone, otp);
     }
-    return !!(await UserModel.create({ phone, otp, roles: [USER_ROLE] }));
+    return !!(await UserModel.create({ phone, otp, roles: [ROLES.USER] }));
   }
   async checkExistUser(phone) {
     const user = await UserModel.findOne({ phone });
