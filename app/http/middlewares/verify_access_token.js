@@ -4,8 +4,11 @@ const { UserModel } = require("../../models/user.model");
 const verifyAccessToken = async (req, res, next) => {
   const headers = req.headers;
   const token = headers?.accesstoken;
+  console.log(token);
+
   if (token) {
     const decodeToken = JWT.decode(token, { complete: true });
+    console.log(decodeToken);
     if (!decodeToken)
       return next(createHttpError.Unauthorized("Please Login To Your Account"));
     const { phone } = decodeToken.payload;

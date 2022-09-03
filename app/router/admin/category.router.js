@@ -2,18 +2,12 @@ const {
   CategoryController,
 } = require("../../http/controllers/admin/category.controller");
 const router = require("express").Router();
-/**
- * @swagger
- *  tags:
- *      name: Add-Category
- *      description: Add New Category
- */
 
 /**
  * @swagger
  * /admin/category/add:
  *  post:
- *      tags: [Add-Category]
+ *      tags: [Category(Admin Panel)]
  *      summary: Add New Category to database
  *      parameters:
  *          -   in: formData
@@ -35,16 +29,9 @@ router.post("/add", CategoryController.addCategory);
 
 /**
  * @swagger
- *  tags:
- *      name: Remove-Category
- *      description: Remove A Category By ID
- */
-
-/**
- * @swagger
  * /admin/category/remove/{categoryId}:
- *  post:
- *      tags: [Remove-Category]
+ *  delete:
+ *      tags: [Category(Admin Panel)]
  *      summary: Remove A Category By ID From Database
  *      parameters:
  *          -   in: path
@@ -60,20 +47,13 @@ router.post("/add", CategoryController.addCategory);
  *              description: internal server error
  */
 
-router.post("/remove/:categoryId", CategoryController.removeCategory);
-
-/**
- * @swagger
- *  tags:
- *      name: Get-Parent
- *      description: Get Parent Categories
- */
+router.delete("/remove/:categoryId", CategoryController.removeCategory);
 
 /**
  * @swagger
  * /admin/category/parents:
  *  get:
- *      tags: [Get-Parent]
+ *      tags: [Category(Admin Panel)]
  *      summary: Get Parent Categories From Database
  *      responses:
  *          201:
@@ -88,16 +68,9 @@ router.get("/parents", CategoryController.getParentCategory);
 
 /**
  * @swagger
- *  tags:
- *      name: Get-Children
- *      description: Get Child Categories
- */
-
-/**
- * @swagger
  * /admin/category/children/{parentId}:
  *  get:
- *      tags: [Get-Children]
+ *      tags: [Category(Admin Panel)]
  *      summary: Get Children of Major Categories From Database
  *      parameters:
  *          -   in: path
@@ -116,16 +89,9 @@ router.get("/children/:parentId", CategoryController.getChildrenOfParent);
 
 /**
  * @swagger
- *  tags:
- *      name: Get-All-Children
- *      description: Get All Children Categories
- */
-
-/**
- * @swagger
  * /admin/category/children-all:
  *  get:
- *      tags: [Get-All-Children]
+ *      tags: [Category(Admin Panel)]
  *      summary: Get Children Categories From Database
  *      responses:
  *          201:
@@ -140,16 +106,9 @@ router.get("/children-all", CategoryController.getAllCategories);
 
 /**
  * @swagger
- *  tags:
- *      name: Add-Category
- *      description: Edit Category
- */
-
-/**
- * @swagger
  * /admin/category/edit-category/{categoryId}:
- *  post:
- *      tags: [Edit-Category]
+ *  patch:
+ *      tags: [Category(Admin Panel)]
  *      summary: Edit Category
  *      parameters:
  *          -   in: formData
@@ -169,20 +128,13 @@ router.get("/children-all", CategoryController.getAllCategories);
  *              description: internal server error
  */
 
-router.post("/edit-category/:categoryId", CategoryController.editCategory);
-
-/**
- * @swagger
- *  tags:
- *      name: Get-Category
- *      description: Get Category by ID
- */
+router.patch("/edit-category/:categoryId", CategoryController.editCategory);
 
 /**
  * @swagger
  * /admin/category/get-category/{categoryId}:
  *  get:
- *      tags: [Get-Category]
+ *      tags: [Category(Admin Panel)]
  *      summary: Get Category  From Database
  *      parameters:
  *          -   in: path

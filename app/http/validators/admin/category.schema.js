@@ -1,4 +1,5 @@
 const joi = require("@hapi/joi");
+const { MONGOIDPATTERN } = require("../../../utils/constants");
 
 const createCategorySchema = joi.object({
   title: joi
@@ -18,7 +19,7 @@ const removeCategorySchema = joi.object({
   categoryId: joi
     .string()
     .allow("")
-    .pattern(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+    .pattern(MONGOIDPATTERN)
     .allow("")
     .error(new Error("Category Id Is Not Correct")),
 });

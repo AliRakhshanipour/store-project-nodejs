@@ -6,8 +6,8 @@ const router = require("express").Router();
 /**
  * @swagger
  *  tags:
- *    name: User-Authentication
- *    description: user-auth section
+ *    - name: User-Panel
+ *      description: user-auth section
  */
 
 /**
@@ -15,7 +15,7 @@ const router = require("express").Router();
  *   /user/get-otp:
  *
  *    post:
- *       tags: [User-Authentication]
+ *       tags: [User-Panel]
  *       summary: login user in user panel with phone number
  *       description: use one time password(otp) login method
  *       parameters:
@@ -39,16 +39,9 @@ router.post("/get-otp", UserAthController.getOtp);
 
 /**
  * @swagger
- *  tags:
- *    name: check-otp
- *    description: check the validation of user otp
- */
-
-/**
- * @swagger
  *  /user/check-otp:
  *    post:
- *       tags: [check-otp]
+ *       tags: [User-Panel]
  *       summary: check otp
  *       description: check one time password(otp)that user entered
  *       parameters:
@@ -77,16 +70,9 @@ router.post("/check-otp", UserAthController.checkOtp);
 
 /**
  * @swagger
- *  tags:
- *    name: refresh-token
- *    description: create refresh token
- */
-
-/**
- * @swagger
  *  /user/refresh-token:
  *    post:
- *      tags: [refresh-token]
+ *      tags: [User-Panel]
  *      summary: send refresh token for get new token and refresh token
  *      description: fresh token
  *      parameters:
