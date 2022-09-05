@@ -5,18 +5,58 @@ const router = require("express").Router();
 
 /**
  * @swagger
+ *  components:
+ *    schemas:
+ *      Category:
+ *        type: object
+ *        required:
+ *          - title
+ *        properties:
+ *          title:
+ *            type: string
+ *            description: title of the category
+ *          parent:
+ *            type: string
+ *            description: parent of the category
+ *      RemoveCategory:
+ *        type: object
+ *        required:
+ *          - categoryId
+ *        properties:
+ *            categoryId:
+ *              type: string
+ *              description: category id that you want to delete that
+ *      refreshToken:
+ *        type: object
+ *        required:
+ *          - refreshToken
+ *        properties:
+ *            refreshToken:
+ *              type: string
+ *              description: refresh token
+ */
+
+/**
+ * @swagger
  * /admin/category/add:
  *  post:
  *      tags: [Category(Admin Panel)]
  *      summary: Add New Category to database
  *      parameters:
- *          -   in: formData
+ *          -   in: header
  *              type: string
+ *              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTIwMzQzMjIxIiwiaWF0IjoxNjYyMjkzNTg3LCJleHAiOjE2NjIyOTcxODd9.JxiPgnJPxtTXmQ70hZUmbEE-sDVqLbs7h4LdSFnDQaM
  *              required: true
- *              name: title
- *          -   in: formData
- *              type: string
- *              name: parent
+ *              name: accesstoken
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              $ref: '#/components/schemas/Category'
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Category'
  *      responses:
  *          201:
  *              description: success
@@ -33,11 +73,15 @@ router.post("/add", CategoryController.addCategory);
  *  delete:
  *      tags: [Category(Admin Panel)]
  *      summary: Remove A Category By ID From Database
- *      parameters:
- *          -   in: path
- *              type: string
- *              required: true
- *              name: categoryId
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/x-www-form-urlencoded:
+ *            schema:
+ *              $ref: '#/components/schemas/RemoveCategory'
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/RemoveCategory'
  *      responses:
  *          201:
  *              description: success
@@ -152,5 +196,5 @@ router.patch("/edit-category/:categoryId", CategoryController.editCategory);
 
 router.get("/get-category/:categoryId", CategoryController.getCategoryById);
 module.exports = {
-  CategoryRoutes: router,
+  AdminCategoryRouter: router,
 };

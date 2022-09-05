@@ -26,14 +26,20 @@ function createRote(req) {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    const filePath = createRote(req);
-    callback(null, filePath);
+    if (file?.originalname) {
+      const filePath = createRote(req);
+      return callback(null, filePath);
+    }
+    callback(null, null);
   },
   filename: (req, file, callback) => {
-    const fileExt = path.extname(file.originalname);
-    const fileName = String(new Date().getTime() + fileExt);
-    req.body.file_name = fileName;
-    callback(null, fileName);
+    if (file?.originalname) {
+      const fileExt = path.extname(file.originalname);
+      const fileName = String(new Date().getTime() + fileExt);
+      req.body.file_name = fileName;
+      return callback(null, fileName);
+    }
+    callback(null, null);
   },
 });
 

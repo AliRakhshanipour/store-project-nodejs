@@ -5,6 +5,7 @@
         "datasource",
         "middlewares",
         "MONGOIDPATTERN",
+        "openapi",
         "rakhshanipour",
         "SETEX"
     ]

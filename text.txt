@@ -1,0 +1,6 @@
+{
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTExMTExMTExIiwiaWF0IjoxNjYyMzE0NTE5LCJleHAiOjE2NjIzMTgxMTl9.8wrENKqmxvygDtaTCZD-gKXwN6tULtEuthLTfo4gIlY",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MTEyMzQxMjIzIiwiaWF0IjoxNjYyMjk2ODI5LCJleHAiOjE2OTM4NTQ0Mjl9.8r-YuxsZ_3pmV66IrmltaCGPVgDJpZZyBuivXL1WgGM"
+  }
+}

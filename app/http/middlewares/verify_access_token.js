@@ -1,14 +1,18 @@
 const createHttpError = require("http-errors");
 const JWT = require("jsonwebtoken");
 const { UserModel } = require("../../models/user.model");
-const verifyAccessToken = async (req, res, next) => {
-  const headers = req.headers;
-  const token = headers?.accesstoken;
-  console.log(token);
 
+const getToken = (headers) => {
+  if (headers?.authorization) {
+    return headers.authorization.split(" ")[1];
+  }
+  return headers.accesstoken;
+};
+
+const verifyAccessToken = async (req, res, next) => {
+  const token = getToken(req.headers);
   if (token) {
     const decodeToken = JWT.decode(token, { complete: true });
-    console.log(decodeToken);
     if (!decodeToken)
       return next(createHttpError.Unauthorized("Please Login To Your Account"));
     const { phone } = decodeToken.payload;
@@ -21,6 +25,20 @@ const verifyAccessToken = async (req, res, next) => {
   return next(createHttpError.Unauthorized("Please Login To Your Account"));
 };
 
+const checkRole = (role) => {
+  return (req, res, next) => {
+    try {
+      const user = req.user;
+      if (!user.roles.includes(role))
+        throw createHttpError.Forbidden("Access Denied");
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
 module.exports = {
   verifyAccessToken,
+  checkRole,
 };

@@ -30,8 +30,7 @@ class CategoryController extends Controller {
   }
   async removeCategory(req, res, next) {
     try {
-      // await removeCategorySchema.validateAsync(req.params);
-      const { categoryId } = req.params;
+      const { categoryId } = req.body;
       const category = await CategoryModel.findOne({ _id: categoryId });
       if (!category) throw createHttpError.NotFound("Category Not Found");
       const removeCategoryResult = await CategoryModel.deleteOne({
@@ -74,7 +73,6 @@ class CategoryController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
-
   async getAllCategories(req, res, next) {
     try {
       const children = await CategoryModel.aggregate([
@@ -98,7 +96,6 @@ class CategoryController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
-
   async editCategory(req, res, next) {
     await editCategorySchema.validateAsync(req.body);
     const { categoryId } = req.params;
@@ -122,7 +119,6 @@ class CategoryController extends Controller {
       next(error);
     }
   }
-
   async getCategoryById(req, res, next) {
     try {
       const { categoryId } = req.params;
