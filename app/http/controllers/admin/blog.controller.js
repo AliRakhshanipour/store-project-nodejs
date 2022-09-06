@@ -42,7 +42,6 @@ class BlogController extends Controller {
       });
     } catch (error) {
       const image = path.join(req.body.fileUploadPath, req.body.file_name);
-      console.log(image);
       deleteFileInPublic(image);
       next(createHttpError.BadRequest(error.message));
     }

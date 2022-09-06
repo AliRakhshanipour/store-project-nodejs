@@ -47,8 +47,23 @@ const router = require("express").Router();
  *            discount:
  *               type: string
  *               description: discount of the product
+ *            height:
+ *               type: string
+ *               description: heigh of the product package
+ *            weight:
+ *               type: string
+ *               description: weight of the product package
+ *            width:
+ *               type: string
+ *               description: width of the product package
+ *            length:
+ *               type: string
+ *               description: length of the product package
  *            images:
- *               type: file
+ *               type: array
+ *                items:
+ *                  type: string
+ *                  format: binary
  *               description: images of product
  *
  *

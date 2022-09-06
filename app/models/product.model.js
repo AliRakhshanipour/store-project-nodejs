@@ -15,7 +15,6 @@ const schema = new Schema({
   count: { type: Number },
   discount: { type: Number, default: 0 },
   price: { type: Number, default: 0 },
-  type: { type: String, required: true }, //virtual , physic
   time: { type: String },
   format: { type: String },
   supplier: { type: Types.ObjectId, required: true },
@@ -32,7 +31,7 @@ const schema = new Schema({
     },
     required: true,
   },
-  rate: { type: Number, required: true },
+  rate: { type: Number },
 });
 
 module.exports = {
