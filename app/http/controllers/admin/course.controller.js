@@ -47,14 +47,29 @@ class CourseController extends Controller {
       const course = await CourseModel.create(data);
       if (!course)
         throw createHttpError.BadRequest("Course Creation Unsuccessful");
-      return res
-        .status(httpStatus.OK)
-        .json({
-          data: {
-            statusCode: httpStatus.OK,
-            message: "Course Creation Successful",
-          },
-        });
+      await this.checkExistCourse(req.body.title);
+      return res.status(httpStatus.CREATED).json({
+        data: {
+          statusCode: httpStatus.CREATED,
+          message: "Course Creation Successful",
+        },
+      });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  }
+  async getCourse(req, res, next) {
+    try {
+      const { id } = req.params;
+      const course = await CourseModel.findOne({ _id: id });
+      if (!course)
+        throw createHttpError.NotFound("No Course Found With This Id");
+      return res.status(httpStatus.OK).json({
+        data: {
+          statusCode: httpStatus.OK,
+          course,
+        },
+      });
     } catch (error) {
       next(createHttpError.BadRequest(error.message));
     }
@@ -82,6 +97,10 @@ class CourseController extends Controller {
     } catch (error) {
       next(createHttpError.BadRequest(error.message));
     }
+  }
+  async checkExistCourse(title) {
+    let course = CourseModel.findOne({ title });
+    if (course) throw createHttpError.BadRequest("This Title Already Exists");
   }
 }
 

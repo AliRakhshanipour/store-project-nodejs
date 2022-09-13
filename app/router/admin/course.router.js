@@ -107,7 +107,27 @@ router.post(
   CourseController.createCourse
 );
 
-// router.get("/");  //get a course
+/**
+ * @swagger
+ *  /admin/course/{id}:
+ *   get:
+ *      tags: [Course(Admin Panel)]
+ *      summary: Get a course
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: get course with id
+ *          type: string
+ *      responses:
+ *          200:
+ *              description: success
+ *          400:
+ *              description: bad request
+ *          500:
+ *              description: internal server error
+ */
+
+router.get("/:id", CourseController.getCourse); //get a course
 // router.post("/"); // create a course
 // router.put("/"); // create a episode
 // router.put("/"); // create new chapter
