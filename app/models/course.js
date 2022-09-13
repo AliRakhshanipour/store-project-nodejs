@@ -12,11 +12,11 @@ const Chapter = new Schema({
   episode: { type: [Episode], default: [] },
 });
 
-const schema = new Schema({
+const CourseSchema = new Schema({
   title: { type: String, required: true },
   text: { type: String, required: true },
   short_text: { type: String, required: true },
-  images: { type: String, required: true },
+  images: { type: [String], required: true },
   tags: { type: [String], default: [] },
   category: { type: Types.ObjectId, ref: "category", required: true },
   comments: { type: [CommentSchema], default: [] },
@@ -25,7 +25,7 @@ const schema = new Schema({
   bookmark: { type: [Types.ObjectId], default: [] },
   discount: { type: Number, default: 0 },
   price: { type: Number, default: 0 },
-  chapter: { type: [Chapter], default: [] },
+  chapters: { type: [Chapter], default: [] },
   type: {
     type: String,
     required: true,
@@ -33,10 +33,12 @@ const schema = new Schema({
   },
   time: { type: String, default: "00:00:00" },
   supplier: { type: Types.ObjectId, ref: "user", required: true },
-  rate: { type: Number, required: true },
-  students: { type: Types.ObjectId, default: [], ref: "user" },
+  rate: { type: Number, default: 0 },
+  students: { type: [Types.ObjectId], default: [], ref: "user" },
 });
 
+CourseSchema.index({ title: "text", short_text: "text", text: "text" });
+
 module.exports = {
-  CourseModel: model("course", schema),
+  CourseModel: model("course", CourseSchema),
 };

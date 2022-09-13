@@ -1,4 +1,5 @@
 const createHttpError = require("http-errors");
+const { statusCodes: httpStatus } = require("http-status-codes");
 const { BlogModel } = require("../../../models/blog.model");
 const { stringToArray } = require("../../middlewares/string-to-array");
 const { createBlogSchema } = require("../../validators/admin/blog.schema");
@@ -36,7 +37,7 @@ class BlogController extends Controller {
       if (!blog) throw createHttpError.BadRequest("Blog Creation Failed");
       return res.json({
         data: {
-          statusCode: 201,
+          statusCode: httpStatus.CREATED,
           message: "Blog Creation Successfully Done",
         },
       });

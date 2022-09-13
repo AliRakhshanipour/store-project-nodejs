@@ -1,8 +1,8 @@
 const {
-  ProductController
+  ProductController,
 } = require("../../http/controllers/admin/product.controller");
-const {stringToArray} = require("../../http/middlewares/string-to-array");
-const {uploadFile} = require("../../utils/multer");
+const { stringToArray } = require("../../http/middlewares/string-to-array");
+const { uploadFile } = require("../../utils/multer");
 
 const router = require("express").Router();
 
@@ -169,7 +169,7 @@ router.post(
  *                      schema:
  *                          $ref: '#/components/schemas/editProduct'
  *          responses:
- *              201:
+ *              200:
  *                  description: success
  *              400:
  *                  description: bad request
@@ -191,6 +191,11 @@ router.patch(
  *   get:
  *          tags: [Product(Admin Panel)]
  *          summary: get all products
+ *          parameters:
+ *            - in: query
+ *              name: search
+ *              description: text for search in product with title and short text
+ *              type: string
  *          responses:
  *              201:
  *                  description: success
@@ -252,5 +257,5 @@ router.get("/:id", ProductController.getOneProduct);
 router.delete("/remove/:id", ProductController.removeProduct);
 
 module.exports = {
-  AdminProductRouter: router
+  AdminProductRouter: router,
 };
