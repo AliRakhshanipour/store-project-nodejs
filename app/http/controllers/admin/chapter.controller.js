@@ -68,6 +68,34 @@ class ChapterController extends Controller {
     if (!chapter) throw createHttpError.NotFound("No Chapter Found");
     else return chapter;
   }
+  async removeChapter(req, res, next) {
+    try {
+      const { chapterId } = req.params;
+      const chapter = await this.getOneChapter(chapterId);
+      console.log(chapter);
+      const removeResult = await CourseModel.updateOne(
+        { "chapters._id": chapterId },
+        {
+          $pull: {
+            chapters: {
+              _id: chapterId,
+            },
+          },
+        }
+      );
+      if (removeResult.modifiedCount === 0)
+        throw createHttpError.InternalServerError("Deletion Unsuccessful");
+      else
+        return res.status(httpStatus.OK).json({
+          statusCode: httpStatus.OK,
+          data: {
+            message: "Chapter Deleted Successfully",
+          },
+        });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  }
 }
 
 module.exports = {

@@ -80,3 +80,22 @@
  *                          schema:
  *                              $ref: '#/definitions/publicDefinitions'
  */
+
+/**
+ * @swagger
+ *  /admin/chapter/remove/{chapterId}:
+ *      patch:
+ *          tags: [Chapter(Admin Panel)]
+ *          summary: get one chapter
+ *          parameters:
+ *              -   in: path
+ *                  required: true
+ *                  name: chapterId
+ *          responses:
+ *              200:
+ *                  description: success
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinitions'
+ */
