@@ -32,6 +32,9 @@ const courseValidator = joi.object({
     .allow("", null)
     .error(createHttpError.BadRequest("Tags Must Be Less Than 30")),
   type: joi.string().error(createHttpError.BadRequest("Type Is Not Correct")),
+  status: joi
+    .string()
+    .error(createHttpError.BadRequest("Status Is Not Correct")),
   category: joi
     .string()
     .pattern(MONGOIDPATTERN)

@@ -1,5 +1,5 @@
 const createHttpError = require("http-errors");
-const { statusCodes: httpStatus } = require("http-status-codes");
+const { StatusCodes: httpStatus } = require("http-status-codes");
 const { BlogModel } = require("../../../models/blog.model");
 const { stringToArray } = require("../../middlewares/string-to-array");
 const { createBlogSchema } = require("../../validators/admin/blog.schema");
@@ -78,7 +78,9 @@ class BlogController extends Controller {
         },
       ]);
 
-      return res.status(200).json({ data: { blogs } });
+      return res
+        .status(httpStatus.OK)
+        .json({ statusCode: httpStatus.OK, data: { blogs } });
     } catch (error) {
       next(createHttpError.BadRequest(error.message));
     }

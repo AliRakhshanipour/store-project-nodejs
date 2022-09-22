@@ -5,6 +5,8 @@ const { CourseModel } = require("../../../models/course");
 const { Controller } = require("../controller");
 const { listOfImages } = require("../../../utils/image-list");
 const { courseValidator } = require("../../validators/admin/course.schema");
+const { deleteFileInPublic } = require("../../../utils/unlink-file");
+const { isValidObjectId } = require("mongoose");
 class CourseController extends Controller {
   async getCourses(req, res, next) {
     try {
@@ -31,10 +33,16 @@ class CourseController extends Controller {
   }
   async createCourse(req, res, next) {
     try {
+      await this.checkExistCourse(req.body.title);
       await courseValidator.validateAsync(req.body);
       const images = listOfImages(req?.files || [], req.body.fileUploadPath);
       req.body.images = images;
       req.body.supplier = req.user._id;
+      const { price, type } = req.body;
+      if (Number(price) > 0 && type === "free")
+        throw createHttpError.BadRequest(
+          "For Free Courses ,You Can Not Set Price"
+        );
       let data = { ...req.body };
       Object.keys(data).forEach((key) => {
         if (data[key] == "" || data[key] == null) {
@@ -47,7 +55,6 @@ class CourseController extends Controller {
       const course = await CourseModel.create(data);
       if (!course)
         throw createHttpError.BadRequest("Course Creation Unsuccessful");
-      await this.checkExistCourse(req.body.title);
       return res.status(httpStatus.CREATED).json({
         data: {
           statusCode: httpStatus.CREATED,
@@ -55,6 +62,8 @@ class CourseController extends Controller {
         },
       });
     } catch (error) {
+      const image = path.join(req.body.fileUploadPath, req.body.file_name);
+      deleteFileInPublic(image);
       next(createHttpError.BadRequest(error.message));
     }
   }
@@ -86,21 +95,27 @@ class CourseController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
-  async addNewChapter(req, res, next) {
-    try {
-    } catch (error) {
-      next(createHttpError.BadRequest(error.message));
-    }
-  }
   async addNewEpisode(req, res, next) {
     try {
     } catch (error) {
       next(createHttpError.BadRequest(error.message));
     }
   }
+  async findCourseById(id) {
+    if (isValidObjectId(id))
+      throw createHttpError.BadRequest("ID Is Not Valid");
+    let course = await CourseModel.findOne({ _id: id });
+    if (!course) return createHttpError.NotFound("No Course Found");
+    return course;
+  }
   async checkExistCourse(title) {
-    let course = CourseModel.findOne({ title });
-    if (course) throw createHttpError.BadRequest("This Title Already Exists");
+    try {
+      let checkCourse = await CourseModel.findOne({ title: title });
+      if (checkCourse)
+        throw createHttpError.BadRequest("This Title Already Exists");
+    } catch (error) {
+      throw createHttpError.BadRequest(error.message);
+    }
   }
 }
 

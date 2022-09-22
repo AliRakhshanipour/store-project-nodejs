@@ -26,6 +26,7 @@ const CourseSchema = new Schema({
   discount: { type: Number, default: 0 },
   price: { type: Number, default: 0 },
   chapters: { type: [Chapter], default: [] },
+  status: { type: String, required: true, default: "open" }, //open ,finish ,updating
   type: {
     type: String,
     required: true,
