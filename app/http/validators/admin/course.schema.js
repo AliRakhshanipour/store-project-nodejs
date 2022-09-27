@@ -49,6 +49,30 @@ const courseValidator = joi.object({
     .error(createHttpError.BadRequest("Price Is Not Correct")),
 });
 
+const episodeValidator = joi.object({
+  title: joi
+    .string()
+    .min(3)
+    .trim()
+    .error(createHttpError.BadRequest("Title Not Allowed")),
+  text: joi.string().error(createHttpError.BadRequest("Text Not Allowed")),
+  type: joi.string().regex(/(lock|unlock)/i),
+  chapterId: joi
+    .string()
+    .regex(MONGOIDPATTERN)
+    .error(createHttpError.BadRequest("Chapter ID Is Not Correct")),
+  courseId: joi
+    .string()
+    .regex(MONGOIDPATTERN)
+    .error(createHttpError.BadRequest("Course ID Is Not Correct")),
+  fileUploadPath: joi.allow(),
+  file_name: joi
+    .string()
+    .regex(/(\.mov|\.mp4|\.mpeg|\.mpg|\.mkv)$/)
+    .error(createHttpError.BadRequest("file format is not allowed")),
+});
+
 module.exports = {
   courseValidator,
+  episodeValidator,
 };

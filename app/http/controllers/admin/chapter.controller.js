@@ -96,6 +96,36 @@ class ChapterController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
+  async updateChapter(req, res, next) {
+    try {
+      const { chapterId } = req.params;
+      const { title, text } = req.body;
+      const updateChapterResult = await CourseModel.updateOne(
+        {
+          "chapters._id": chapterId,
+        },
+        {
+          $set: {
+            "chapters.$": {
+              title,
+              text,
+            },
+          },
+        }
+      );
+      if (updateChapterResult.modifiedCount == 0)
+        throw createHttpError.InternalServerError("Update Failed");
+      else
+        return res.status(httpStatus.OK).json({
+          statusCode: httpStatus.OK,
+          data: {
+            message: "Update Successful",
+          },
+        });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  }
 }
 
 module.exports = {

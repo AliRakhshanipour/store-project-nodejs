@@ -17,9 +17,26 @@ class CourseController extends Controller {
           $text: {
             $search: search,
           },
-        }).sort({ _id: -1 });
+        })
+          .populate([
+            { path: "category", select: { children: 0, parent: 0 } },
+            {
+              path: "supplier",
+              select: { file_name: 1, last_name: 1, phone: 1, email: 1 },
+            },
+          ])
+          .sort({ _id: -1 });
       // sort from last course created to first
-      else courses = await CourseModel.find({}).sort({ _id: -1 }); // sort from last course created to first
+      else
+        courses = await CourseModel.find({})
+          .populate([
+            { path: "category", select: { children: 0, parent: 0 } },
+            {
+              path: "supplier",
+              select: { file_name: 1, last_name: 1, phone: 1, email: 1 },
+            },
+          ])
+          .sort({ _id: -1 }); // sort from last course created to first
 
       if (!courses) throw createHttpError.NotFound("No Course Found");
       return res.status(httpStatus.OK).json({

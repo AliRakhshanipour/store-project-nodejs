@@ -5,6 +5,7 @@ const path = require("path");
 const { AllRoutes } = require("./router/router");
 const createError = require("http-errors"); // for error handling
 const swaggerUI = require("swagger-ui-express");
+require("dotenv").config();
 const swaggerJsDoc = require("swagger-jsdoc");
 //---------------------------------------------------------------- app configuration
 module.exports = class Application {

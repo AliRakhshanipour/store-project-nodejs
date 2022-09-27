@@ -56,6 +56,26 @@ const uploadFile = multer({
     fileSize: 1024 * 1024,
   },
 });
+const uploadVideo = multer({
+  storage,
+  fileFilter: (req, file, callback) => {
+    let ext = path.extname(file.originalname);
+    if (
+      ext !== ".mkv" &&
+      ext !== ".mpg" &&
+      ext !== ".mp4" &&
+      ext !== ".mpeg" &&
+      ext !== ".mov"
+    ) {
+      return callback(createHttpError.BadRequest("File Type Is not Allowed!"));
+    }
+    callback(null, true);
+  },
+  limits: {
+    fileSize: 300 * 1024 * 1024,
+  },
+});
 module.exports = {
   uploadFile,
+  uploadVideo,
 };

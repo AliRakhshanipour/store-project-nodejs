@@ -17,6 +17,46 @@
  *              text:
  *                  type: string
  *                  example: description of chapter
+ *      update-chapter:
+ *          type: object
+ *          required:
+ *              -   title
+ *              -   text
+ *          properties:
+ *              title:
+ *                  type: string
+ *                  example: title of chapter
+ *              text:
+ *                  type: string
+ *                  example: text of chapter
+ */
+
+/**
+ * @swagger
+ *  /admin/chapter/edit/{chapterId}:
+ *      patch:
+ *          tags: [Chapter(Admin Panel)]
+ *          summary: Update chapter
+ *          parameters:
+ *              -   in: path
+ *                  name: chapterId
+ *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/update-chapter'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/update-chapter'
+ *          responses:
+ *              200:
+ *                  description: success
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinitions'
  */
 
 /**

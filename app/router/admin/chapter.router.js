@@ -4,6 +4,7 @@ const {
 
 const router = require("express").Router();
 router.put("/add", ChapterController.addNewChapter); // create new chapter
+router.patch("/edit/:chapterId", ChapterController.updateChapter);
 router.get("/list/:courseId", ChapterController.listOfChapters);
 router.patch("/remove/:chapterId", ChapterController.removeChapter);
 router.get("/:chapterId", ChapterController.getChapter);
