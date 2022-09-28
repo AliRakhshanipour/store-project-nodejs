@@ -57,6 +57,7 @@ class EpisodeController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
+  async removeEpisode(req, res, next) {}
 }
 
 module.exports = {

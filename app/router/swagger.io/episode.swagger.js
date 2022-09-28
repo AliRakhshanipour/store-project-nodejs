@@ -54,3 +54,19 @@
  *                          schema:
  *                              $ref: '#/definitions/publicDefinitions'
  */
+
+/**
+ * @swagger
+ *  /admin/episode/remove/{episodeId}:
+ *      delete:
+ *          tags:[Episode(Admin Panel)]
+ *          summary: remove episode
+ *          parameters:
+ *              -   in: path
+ *                  name: episodeId
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: success
+ */
