@@ -21,10 +21,8 @@ class EpisodeController extends Controller {
         file_name,
       } = await episodeValidator.validateAsync(req.body);
       const videoAddress = join(fileUploadPath, file_name);
-      console.log(videoAddress);
       const videoURL = `http://localhost:3000/${videoAddress}`;
       const seconds = await getVideoDurationInSeconds(videoURL);
-      console.log(seconds);
       const time = getTime(seconds);
       const episode = {
         title,
@@ -57,7 +55,74 @@ class EpisodeController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
-  async removeEpisode(req, res, next) {}
+  async removeEpisode(req, res, next) {
+    try {
+      const { episodeId } = req.params;
+      const removeEpisodeResult = await CourseModel.updateOne(
+        {
+          "chapters.episode._id": episodeId,
+        },
+        {
+          $pull: {
+            "chapters.$.episode": {
+              _id: episodeId,
+            },
+          },
+        }
+      );
+      if (removeEpisodeResult.modifiedCount === 0)
+        throw createHttpError.InternalServerError("No Episode Deleted");
+      else
+        return res.status(httpStatus.OK).json({
+          statusCode: httpStatus.OK,
+          data: {
+            message: "Episode Deleted Successfully",
+          },
+        });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  }
+  async editEpisode(req, res, next) {
+    try {
+      const { episodeId } = req.params;
+      console.log(episodeId);
+      console.log(req.body);
+      const { file_name, fileUploadPath } = req.body;
+      if (fileUploadPath && file_name) {
+        const videoAddress = join(fileUploadPath, file_name);
+        req.body.videoAddress = videoAddress;
+        const videoURL = `http://localhost:3000/${videoAddress}`;
+        const seconds = await getVideoDurationInSeconds(videoURL);
+        const time = getTime(seconds);
+        req.body.time = time;
+      }
+      const data = { ...req.body };
+      console.log(data);
+      const editEpisodeResult = await CourseModel.updateOne(
+        {
+          "chapters.episode._id": episodeId,
+        },
+        {
+          $set: {
+            "chapters.$.episode": data,
+          },
+        }
+      );
+      console.log(editEpisodeResult.modifiedCount);
+      if (editEpisodeResult.modifiedCount == 0)
+        throw createHttpError.InternalServerError("Episode Update Failed");
+      else
+        return res.status(httpStatus.OK).json({
+          statusCode: httpStatus.OK,
+          data: {
+            message: "Update Episode Successful",
+          },
+        });
+    } catch (error) {
+      next(createHttpError.BadRequest(error.message));
+    }
+  }
 }
 
 module.exports = {

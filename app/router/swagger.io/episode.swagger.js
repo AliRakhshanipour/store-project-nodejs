@@ -32,6 +32,23 @@
  *              chapterId:
  *                  type: string
  *                  example: ID of chapter
+ *      edit-episode:
+ *          type: object
+ *          properties:
+ *              title:
+ *                  type: string
+ *                  example: title of episode
+ *              text:
+ *                  type: string
+ *                  example: text of episode
+ *              type:
+ *                  type: string
+ *                  example: type of episode (lock | unlock)
+ *                  enum: [lock,unlock]
+ *              video:
+ *                  type: string
+ *                  example: episode time (00:00:00)
+ *                  format: binary
  */
 
 /**
@@ -59,7 +76,7 @@
  * @swagger
  *  /admin/episode/remove/{episodeId}:
  *      delete:
- *          tags:[Episode(Admin Panel)]
+ *          tags: [Episode(Admin Panel)]
  *          summary: remove episode
  *          parameters:
  *              -   in: path
@@ -69,4 +86,30 @@
  *          responses:
  *              200:
  *                  description: success
+ */
+
+/**
+ * @swagger
+ *  /admin/episode/edit/{episodeId}:
+ *      patch:
+ *          tags: [Episode(Admin Panel)]
+ *          summary: edit episode
+ *          parameters:
+ *              -   in: path
+ *                  name: episodeId
+ *                  required: true
+ *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/edit-episode'
+ *              responses:
+ *                  200:
+ *                      description: success
+ *                      content:
+ *                          application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinitions'
  */

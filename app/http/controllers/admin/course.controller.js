@@ -4,9 +4,17 @@ const { StatusCodes: httpStatus } = require("http-status-codes");
 const { CourseModel } = require("../../../models/course");
 const { Controller } = require("../controller");
 const { listOfImages } = require("../../../utils/image-list");
-const { courseValidator } = require("../../validators/admin/course.schema");
+const {
+  courseValidator,
+  objectIdValidator,
+} = require("../../validators/admin/course.schema");
 const { deleteFileInPublic } = require("../../../utils/unlink-file");
 const { isValidObjectId } = require("mongoose");
+const {
+  deletePropertyOfRequest,
+  deleteEmptyValuesOfRequest,
+} = require("../../../utils/deletePropertyOfRequest");
+
 class CourseController extends Controller {
   async getCourses(req, res, next) {
     try {
@@ -102,6 +110,27 @@ class CourseController extends Controller {
   }
   async editCourse(req, res, next) {
     try {
+      const { id } = req.params;
+      await objectIdValidator.validateAsync({ id });
+      await this.findCourseById(id);
+      const images = listOfImages(req?.files || [], req.body.fileUploadPath);
+      req.body.images = images;
+      let data = { ...req.body };
+      deletePropertyOfRequest(data, ["fileUploadPath", "file_name"]);
+      let blackListEmptyValues = ["", " ", 0, "0", [], null, undefined];
+      deleteEmptyValuesOfRequest(data, blackListEmptyValues);
+      const updateResult = await CourseModel.updateOne(
+        { _id: id },
+        { $set: data }
+      );
+      if (updateResult.modifiedCount === 0)
+        throw createHttpError.BadRequest("Update Failed");
+      else
+        return res.status(httpStatus.OK).json({
+          data: {
+            message: "Edit Course Successfully",
+          },
+        });
     } catch (error) {
       next(createHttpError.BadRequest(error.message));
     }
@@ -112,17 +141,9 @@ class CourseController extends Controller {
       next(createHttpError.BadRequest(error.message));
     }
   }
-  async addNewEpisode(req, res, next) {
-    try {
-    } catch (error) {
-      next(createHttpError.BadRequest(error.message));
-    }
-  }
   async findCourseById(id) {
-    if (isValidObjectId(id))
-      throw createHttpError.BadRequest("ID Is Not Valid");
     let course = await CourseModel.findOne({ _id: id });
-    if (!course) return createHttpError.NotFound("No Course Found");
+    if (!course) throw createHttpError.NotFound("No Course Found");
     return course;
   }
   async checkExistCourse(title) {

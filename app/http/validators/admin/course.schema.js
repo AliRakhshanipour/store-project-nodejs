@@ -72,7 +72,15 @@ const episodeValidator = joi.object({
     .error(createHttpError.BadRequest("file format is not allowed")),
 });
 
+const objectIdValidator = joi.object({
+  id: joi
+    .string()
+    .pattern(MONGOIDPATTERN)
+    .error(createHttpError.BadRequest("Invalid Object ID")),
+});
+
 module.exports = {
   courseValidator,
   episodeValidator,
+  objectIdValidator,
 };

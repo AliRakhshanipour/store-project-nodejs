@@ -16,10 +16,15 @@ router.post(
 ); // add a new course
 
 router.get("/:id", CourseController.getCourse); //get a course
+router.patch(
+  "/edit/:id",
+  uploadFile.array("images", 5),
+  stringToArray("tags"),
+  CourseController.editCourse
+);
 
 // router.post("/"); // create a course
 // router.put("/"); // create a episode
-// router.patch("/");
 // router.delete("/");
 
 module.exports = {

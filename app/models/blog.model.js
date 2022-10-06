@@ -18,6 +18,10 @@ const schema = new Schema(
   { timestamps: true, versionKey: 0 }
 );
 
+schema.virtual("imageURL").get(() => {
+  return `http://localhost:3000/${this.image}`;
+});
+
 module.exports = {
   BlogModel: model("blog", schema),
 };
