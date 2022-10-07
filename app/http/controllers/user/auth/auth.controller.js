@@ -76,7 +76,6 @@ class UserAthController extends Controller {
       expiresIn: EXPIRES_IN(),
     };
     const result = await this.checkExistUser(phone);
-    console.log(result);
     if (result) {
       return await this.updateUser(phone, otp);
     }

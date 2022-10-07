@@ -5,6 +5,8 @@
  *      description: All Actions Of Admin
  *    - name: Course(Admin Panel)
  *      description: All Methods And Routes Of Course Section
+ *    - name: Users(Admin Panel)
+ *      description: All Methods And Routes Of Users Section
  *    - name: Episode(Admin Panel)
  *      description: All Methods And Routes Of Episode Section
  *    - name: Chapter(Admin Panel)

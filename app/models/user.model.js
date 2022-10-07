@@ -4,9 +4,9 @@ const schema = new Schema(
   {
     first_name: { type: String },
     last_name: { type: String },
-    username: { type: String },
-    phone: { type: String },
-    email: { type: String },
+    username: { type: String, unique: true },
+    phone: { type: String, unique: true },
+    email: { type: String, unique: true },
     otp: {
       type: Object,
       default: {
