@@ -25,20 +25,6 @@ const verifyAccessToken = async (req, res, next) => {
   return next(createHttpError.Unauthorized("Please Login To Your Account"));
 };
 
-const checkRole = (role) => {
-  return (req, res, next) => {
-    try {
-      const user = req.user;
-      if (!user.roles.includes(role))
-        throw createHttpError.Forbidden("Access Denied");
-      next();
-    } catch (error) {
-      next(error);
-    }
-  };
-};
-
 module.exports = {
   verifyAccessToken,
-  checkRole,
 };

@@ -5,6 +5,10 @@
  *      description: All Actions Of Admin
  *    - name: Course(Admin Panel)
  *      description: All Methods And Routes Of Course Section
+ *    - name: Role(Admin Panel)
+ *      description: All Methods For Roles
+ *    - name: Permissions(Admin Panel)
+ *      description: All Methods For Permissions
  *    - name: Users(Admin Panel)
  *      description: All Methods And Routes Of Users Section
  *    - name: Episode(Admin Panel)

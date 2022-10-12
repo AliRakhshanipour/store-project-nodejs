@@ -1,4 +1,4 @@
-const deleteEmptyValuesOfRequest = function (data, blackList = []) {
+const deleteEmptyValuesOfRequest = function (data, blackList = [[]]) {
   Object.keys(data).forEach((key, value) => {
     if (blackList.includes(data[key])) delete data[key];
   });

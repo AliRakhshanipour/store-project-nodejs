@@ -79,7 +79,7 @@ class UserAthController extends Controller {
     if (result) {
       return await this.updateUser(phone, otp);
     }
-    return !!(await UserModel.create({ phone, otp, roles: [ROLES.USER] }));
+    return !!(await UserModel.create({ phone, otp, role: ROLES.USER }));
   }
   async checkExistUser(phone) {
     const user = await UserModel.findOne({ phone });
