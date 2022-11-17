@@ -97,26 +97,26 @@ class CategoryController extends Controller {
     }
   }
   async editCategory(req, res, next) {
-    await editCategorySchema.validateAsync(req.body);
-    const { categoryId } = req.params;
-    const { title } = req.body;
-    const checkTitle = await CategoryModel.findOne({ title });
-    if (checkTitle)
-      throw createHttpError.BadRequest(
-        "Title Unavailable , Please Try Another"
-      );
-    const editCategory = await CategoryModel.updateOne(
-      { _id: categoryId },
-      { $set: { title } }
-    );
-    if (editCategory.modifiedCount === 0)
-      throw createHttpError.BadRequest("Update Category Failed");
-    return res
-      .status(200)
-      .json({ status: 200, message: "Category Updated Successfully" });
     try {
+      await editCategorySchema.validateAsync(req.body);
+      const { categoryId } = req.params;
+      const { title } = req.body;
+      const checkTitle = await CategoryModel.findOne({ title });
+      if (checkTitle)
+        throw createHttpError.BadRequest(
+          "Title Unavailable , Please Try Another"
+        );
+      const editCategory = await CategoryModel.updateOne(
+        { _id: categoryId },
+        { $set: { title } }
+      );
+      if (editCategory.modifiedCount === 0)
+        throw createHttpError.BadRequest("Update Category Failed");
+      return res
+        .status(200)
+        .json({ status: 200, message: "Category Updated Successfully" });
     } catch (error) {
-      next(error);
+      next(createHttpError.BadRequest(error.message));
     }
   }
   async getCategoryById(req, res, next) {
